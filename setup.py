@@ -10,7 +10,5 @@ setup(
     url = 'https://github.com/ayushgoel/mstranslator',
     download_url = 'https://github.com/peterldowns/mypackage/tarball/0.1',
     keywords = ['microsoft', 'translator', 'language'],
-    install_requires = [
-        'markdown',
-        ]
+    requires = ['requests']
 )
