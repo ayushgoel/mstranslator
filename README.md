@@ -3,6 +3,7 @@
 Python wrapper for Microsoft Translate services.
 
 The API lets you:
+
 1. Create Authorization Header that can be used to query Microsft Translate APIs.
 2. Detect language for given text.
 3. Translate given text to another language supported by Microsft Translate.
