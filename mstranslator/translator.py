@@ -4,12 +4,11 @@ import sys
 
 class Config():
     """Config to be given to an instance of translator to do the Authorization."""
-    def __init__(self, translator_client_id, translator_client_secret, translator_languages):
+    def __init__(self, translator_client_id, translator_client_secret):
         super(Config, self).__init__()
         #validate
         self.translator_client_id = translator_client_id
         self.translator_client_secret = translator_client_secret
-        self.translator_languages = translator_languages
 
 class Translator():
     """An instance of this class can be used to detect language and translate text."""
