@@ -6,7 +6,12 @@ class Config():
     """Config to be given to an instance of translator to do the Authorization."""
     def __init__(self, translator_client_id, translator_client_secret):
         super(Config, self).__init__()
-        #validate
+        assert translator_client_id is not None
+        assert type(translator_client_id) is str
+
+        assert translator_client_secret is not None
+        assert type(translator_client_secret) is str
+
         self.translator_client_id = translator_client_id
         self.translator_client_secret = translator_client_secret
 
