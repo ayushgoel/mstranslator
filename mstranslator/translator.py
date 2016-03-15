@@ -2,10 +2,9 @@ import requests
 import urllib
 import sys
 
-class Config():
+class Config:
     """Config to be given to an instance of translator to do the Authorization."""
     def __init__(self, translator_client_id, translator_client_secret):
-        super(Config, self).__init__()
         assert translator_client_id is not None
         assert type(translator_client_id) is str
 
@@ -15,10 +14,9 @@ class Config():
         self.translator_client_id = translator_client_id
         self.translator_client_secret = translator_client_secret
 
-class Translator():
+class Translator:
     """An instance of this class can be used to detect language and translate text."""
     def __init__(self, config):
-        super(Translator, self).__init__()
         self.config = config
 
     def __get_access_token():
