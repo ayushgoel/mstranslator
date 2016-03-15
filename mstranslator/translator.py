@@ -19,7 +19,7 @@ class Translator:
     def __init__(self, config):
         self.config = config
 
-    def __get_access_token():
+    def __get_access_token(self):
         data = {"client_id": self.config.translator_client_id,
          "client_secret": self.config.translator_client_secret,
          "scope": 'http://api.microsofttranslator.com',
@@ -27,15 +27,15 @@ class Translator:
         resp = requests.post(url='https://datamarket.accesscontrol.windows.net/v2/OAuth2-13', data=urllib.urlencode(data))
         return resp.json()["access_token"]
 
-    def __authorization_header():
+    def __authorization_header(self):
         access_token = get_access_token()
         print "Using token", access_token
         return "Bearer" + " " + access_token
 
-    def detect_language(text):
+    def detect_language(self, text):
         text = text.encode('utf-8')
         print "Detecting language for text", text
-        authorization_header = authorizationheader.authorization_header()
+        authorization_header = self.__authorization_header()
         headers = {"Authorization": authorization_header}
         data = {"text": text}
         resp = requests.get(url='http://api.microsofttranslator.com/v2/Http.svc/Detect', params=data, headers=headers)
@@ -50,7 +50,9 @@ class Translator:
             print "Could not parse XML", resp.text
             print e
 
-    def translate(text, from_language, to_language, authorization_header=authorizationheader.authorization_header()):
+    def translate(self, text, from_language, to_language, authorization_header):
+        if authorization_header is None:
+            authorization_header = self.__authorization_header()
         text = text.encode('utf-8')
         print "Translating text", text
         headers = {"Authorization": authorization_header}
