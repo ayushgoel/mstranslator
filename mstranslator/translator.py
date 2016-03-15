@@ -29,12 +29,10 @@ class Translator:
 
     def __authorization_header(self):
         access_token = get_access_token()
-        print "Using token", access_token
         return "Bearer" + " " + access_token
 
     def detect_language(self, text):
         text = text.encode('utf-8')
-        print "Detecting language for text", text
         authorization_header = self.__authorization_header()
         headers = {"Authorization": authorization_header}
         data = {"text": text}
@@ -44,17 +42,15 @@ class Translator:
             # Different unicodes for different languages are not parsed correctly
             # with xml module.
             detected_language_code = t.split('>')[1].split('<')[0]
-            print "Language detected: ", detected_language_code
             return (detected_language_code, authorization_header)
         except Exception as e:
-            print "Could not parse XML", resp.text
-            print e
+            sys.stderr.write(e)
+            raise
 
     def translate(self, text, from_language, to_language, authorization_header):
         if authorization_header is None:
             authorization_header = self.__authorization_header()
         text = text.encode('utf-8')
-        print "Translating text", text
         headers = {"Authorization": authorization_header}
         data = {"text": text,
          "from": from_language,
@@ -63,11 +59,10 @@ class Translator:
         try:
             t = resp.text.encode('utf-8')
             translatedText = t.split('>')[1].split('<')[0]
-            print "Got translation: ", translatedText
             return translatedText
         except Exception as e:
-            print "Could not parse XML", resp.text
-            print e
+            sys.stderr.write("Could not parse XML {0}".format(resp.text))
+            raise
 
 if __name__ == '__main__':
     print translate(sys.argv[1], sys.argv[2], sys.argv[3])
