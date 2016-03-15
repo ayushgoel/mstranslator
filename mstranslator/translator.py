@@ -23,19 +23,22 @@ class Translator(object):
     """An instance of this class can be used to detect language and translate text."""
 
     def __init__(self, config):
-        self.config = config
+        assert isinstance(config, Config) is True
+        self.access_token = self._get_access_token(config)
 
-    def _get_access_token(self):
-        data = {"client_id": self.config.translator_client_id,
-         "client_secret": self.config.translator_client_secret,
-         "scope": 'http://api.microsofttranslator.com',
-         "grant_type": 'client_credentials'}
-        resp = requests.post(url='https://datamarket.accesscontrol.windows.net/v2/OAuth2-13', data=urllib.urlencode(data))
+    def _get_access_token(self, config):
+        data = {
+            "client_id": config.translator_client_id,
+            "client_secret": config.translator_client_secret,
+            "scope": 'http://api.microsofttranslator.com',
+            "grant_type": 'client_credentials'
+        }
+        resp = requests.post(url='https://datamarket.accesscontrol.windows.net/v2/OAuth2-13',
+                             data=urllib.urlencode(data))
         return resp.json()["access_token"]
 
     def _authorization_header(self):
-        access_token = self._get_access_token()
-        return "Bearer" + " " + access_token
+        return "Bearer" + " " + self.access_token
 
     def detect_language(self, text):
         text = text.encode('utf-8')
