@@ -28,7 +28,7 @@ class Translator:
         return resp.json()["access_token"]
 
     def __authorization_header(self):
-        access_token = get_access_token()
+        access_token = self.__get_access_token()
         return "Bearer" + " " + access_token
 
     def detect_language(self, text):
