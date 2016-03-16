@@ -26,7 +26,7 @@ class Translator(object):
     def __init__(self, config):
         assert isinstance(config, Config) is True
         self.config = config
-        self.access_token, self.token_expiry = self._get_access_token()
+        self.access_token = self.token_expiry = None
 
     def _get_access_token(self):
         data = {
@@ -40,12 +40,17 @@ class Translator(object):
         if not resp.ok:
             resp.raise_for_status()
 
-        token_expiry = time.time() + int(resp.json()["expires_in"])
-        access_token = resp.json()["access_token"]
+        resp_content = resp.json()
+        token_expiry = time.time() + int(resp_content["expires_in"])  # in seconds
+        access_token = resp_content["access_token"]
 
         return (access_token, token_expiry)
 
     def _authorization_header(self):
+        # Auth tokens are only valid for a limited number of seconds.
+        # Token expiry is sent by the server at the time of obtaining the
+        # token and can be used to auto-refresh the token before making a
+        # new request, post expiry time.
         if (not self.token_expiry) or (self.token_expiry < time.time()):
             self.access_token, self.token_expiry = self._get_access_token()
 
