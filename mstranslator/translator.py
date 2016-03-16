@@ -3,6 +3,7 @@
 import urllib
 import sys
 import requests
+import time
 
 
 class Config(object):
@@ -24,20 +25,30 @@ class Translator(object):
 
     def __init__(self, config):
         assert isinstance(config, Config) is True
-        self.access_token = self._get_access_token(config)
+        self.config = config
+        self.access_token, self.token_expiry = self._get_access_token()
 
-    def _get_access_token(self, config):
+    def _get_access_token(self):
         data = {
-            "client_id": config.translator_client_id,
-            "client_secret": config.translator_client_secret,
+            "client_id": self.config.translator_client_id,
+            "client_secret": self.config.translator_client_secret,
             "scope": 'http://api.microsofttranslator.com',
             "grant_type": 'client_credentials'
         }
         resp = requests.post(url='https://datamarket.accesscontrol.windows.net/v2/OAuth2-13',
                              data=urllib.urlencode(data))
-        return resp.json()["access_token"]
+        if not resp.ok:
+            resp.raise_for_status()
+
+        token_expiry = time.time() + int(resp.json()["expires_in"])
+        access_token = resp.json()["access_token"]
+
+        return (access_token, token_expiry)
 
     def _authorization_header(self):
+        if (not self.token_expiry) or (self.token_expiry < time.time()):
+            self.access_token, self.token_expiry = self._get_access_token()
+
         return "Bearer" + " " + self.access_token
 
     def detect_language(self, text):
