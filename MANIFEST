@@ -2,7 +2,4 @@
 setup.cfg
 setup.py
 mstranslator/__init__.py
-mstranslator/authorizationheader.py
-mstranslator/constants.py
-mstranslator/detector.py
 mstranslator/translator.py
