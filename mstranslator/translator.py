@@ -58,18 +58,18 @@ class Translator(object):
         data = {"text": text}
         resp = requests.get(url='http://api.microsofttranslator.com/v2/Http.svc/Detect',
                             params=data, headers=headers)
-        if resp.ok:
-            try:
-                t = resp.text.encode('utf-8')
-                # Different unicodes for different languages are not parsed
-                # correctly with xml module.
-                detected_language_code = t.split('>')[1].split('<')[0]
-                return detected_language_code
-            except Exception as e:
-                sys.stderr.write(e)
-                raise
-        else:
-            raise resp.raise_for_status()
+        if not resp.ok:
+            resp.raise_for_status()
+
+        try:
+            t = resp.text.encode('utf-8')
+            # Different unicodes for different languages are not parsed
+            # correctly with xml module.
+            detected_language_code = t.split('>')[1].split('<')[0]
+            return detected_language_code
+        except Exception as e:
+            sys.stderr.write(e)
+            raise
 
     def translate(self, text, from_language, to_language):
         text = text.encode('utf-8')
@@ -83,13 +83,13 @@ class Translator(object):
         resp = requests.get(url='http://api.microsofttranslator.com/v2/Http.svc/Translate',
                             params=data, headers=headers)
 
-        if resp.ok:
-            try:
-                t = resp.text.encode('utf-8')
-                translated_text = t.split('>')[1].split('<')[0]
-                return translated_text
-            except Exception:
-                sys.stderr.write(u"Could not parse XML {0}".format(resp.text))
-                raise
-        else:
-            raise resp.raise_for_status()
+        if not resp.ok:
+            resp.raise_for_status()
+
+        try:
+            t = resp.text.encode('utf-8')
+            translated_text = t.split('>')[1].split('<')[0]
+            return translated_text
+        except Exception:
+            sys.stderr.write(u"Could not parse XML {0}".format(resp.text))
+            raise
