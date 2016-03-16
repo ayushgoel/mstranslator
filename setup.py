@@ -9,6 +9,6 @@ setup(
     author_email = 'ayushgoel111@gmail.com',
     url = 'https://github.com/ayushgoel/mstranslator',
     download_url = 'https://github.com/ayushgoel/mstranslator/archive/0.1.0.tar.gz',
-    keywords = ['microsoft', 'translator', 'language'],
+    keywords = ['microsoft', 'translator', 'language', 'mstranslator'],
     requires = ['requests']
 )
