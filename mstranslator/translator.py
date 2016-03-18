@@ -16,6 +16,7 @@ class Config(object):
         assert translator_client_secret is not None
         assert type(translator_client_secret) is str
 
+        super(Config, self).__init__()
         self.translator_client_id = translator_client_id
         self.translator_client_secret = translator_client_secret
 
@@ -25,6 +26,7 @@ class Translator(object):
 
     def __init__(self, config):
         assert isinstance(config, Config) is True
+        super(Translator, self).__init__()
         self.config = config
         self.access_token = self.token_expiry = None
 
