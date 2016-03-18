@@ -40,6 +40,22 @@ $ print translator.translate("hello", 'en', 'hi', u'Authorization Header')
 
 ```
 
+Steps to upload to PyPI
+-
+
+```bash
+
+$ git pull
+$ vi setup.py # Edit version here.
+$ git commit -m "Update version to #NEW_VERSION"
+$ python setup.py check # Should return no errors or warnings.
+$ git tag # NEW_VERSION
+$ git push --tags
+$ git push
+$ python setup.py sdist upload -r pypi # Upload to PyPI
+
+```
+
 Author
 -
 
