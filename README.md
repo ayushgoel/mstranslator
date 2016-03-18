@@ -1,12 +1,13 @@
-# mstranslator
+mstranslator
+-
 
 Python wrapper for Microsoft Translate services.
 
 The API lets you:
 
-1. Create Authorization Header that can be used to query Microsft Translate APIs.
-2. Detect language for given text.
-3. Translate given text to another language supported by Microsft Translate.
+1. Detect language for given text.
+2. Translate given text to another language supported by Microsft Translate.
+3. `access_token` is managed by the package itself.
 
 Usage
 -
@@ -39,10 +40,12 @@ $ print translator.translate("hello", 'en', 'hi', u'Authorization Header')
 
 ```
 
-## Author
+Author
+-
 
 Ayush Goel, ayushgoel111@gmail.com
 
-## License
+License
+-
 
 mstranslator-2016 is available under the MIT license. See the LICENSE file for more info.
